@@ -1,0 +1,44 @@
+{
+    "Data": {
+        "Dir": "data",
+        "PastData": {
+            "File": "past-tokyo-weather.tsv",
+            "ReadCsvParams": {
+                "sep": "\t",
+                "header": 0,
+                "skiprows": [ 1, 2 ],
+                "parse_dates": [ "年月日" ]
+            }
+        },
+        "CurrentData": {
+            "File": "current-tokyo-weather.tsv",
+            "ReadCsvParams": {
+                "sep": "\t",
+                "header": 0,
+                "parse_dates": [ "年月日" ],
+                "na_values": [ "--" ]
+            }
+        },
+        "FeatureEngineering": {
+            "Y": {
+                "OriginalColumn": "降水量の合計(mm)",
+                "Threshold": 0.0
+            },
+            "X": {
+                "UseColumns": [
+                    "平均現地気圧(hPa)",
+                    "平均海面気圧(hPa)",
+                    "平均気温(℃)",
+                    "最高気温(℃)",
+                    "最低気温(℃)",
+                    "平均湿度(％)",
+                    "平均風速(m/s)",
+                    "最大風速(m/s)",
+                    "最大瞬間風速(m/s)",
+                    "日照時間(時間)"
+                ]
+            },
+            "Index": "年月日"
+        }
+    }
+}
