@@ -75,7 +75,12 @@ def main():
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
-    
+
+    result_df = pandas.DataFrame(
+        {"正かい": y_test, "よそく": y_pred}, index=y_test.index
+    )
+    print(result_df)
+
     tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
     accuracy = accuracy_score(y_test, y_pred)
 
