@@ -25,7 +25,8 @@
                 "Threshold": 0.0
             },
             "Index": "年月日",
-            "Query": "index.dt.month == 8 or index.dt.day >= 21"
+            "Query": "index.dt.month == 8 or index.dt.day >= 21",
+            "N": 2
         }
     }
 }

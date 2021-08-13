@@ -27,9 +27,13 @@ def read_data(data_dir, data_config):
     return pandas.read_csv(data_path, **data_params)
 
 
-def prepare_x(df):
-    yesterday = df["y"].shift(periods=1)
-    return pandas.get_dummies(yesterday)
+def prepare_x(df, n):
+    previous_ys = [df["y"].shift(periods=i) for i in range(1, n + 1)]
+    df = pandas.DataFrame({i: previous_ys[i] for i in range(n)})
+    df["previous_y_list"] = df.values.tolist()
+    joined_ys = df["previous_y_list"].map(lambda x: ",".join([str(elm) for elm in x]))
+    
+    return pandas.get_dummies(joined_ys)
 
 
 def prepare_data(df, prep_config):
@@ -45,7 +49,7 @@ def prepare_data(df, prep_config):
     threshold = y_config["Threshold"]
     df["y"] = col.map(lambda x: 0 if pandas.isna(x) or x <= threshold else 1)
 
-    X = prepare_x(df)
+    X = prepare_x(df, prep_config["N"])
 
     q = prep_config["Query"]
     X = X.query(q)
