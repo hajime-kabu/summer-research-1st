@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 
+from datetime import date
 import pandas
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import (
@@ -26,9 +27,9 @@ def read_data(data_dir, data_config):
     return pandas.read_csv(data_path, **data_params)
 
 
-def prepare_x(df, x_config):
-    use_cols = x_config["UseColumns"]
-    return df[use_cols]
+def prepare_x(df):
+    yesterday = df["y"].shift(periods=1)
+    return pandas.get_dummies(yesterday)
 
 
 def prepare_data(df, prep_config):
@@ -42,10 +43,14 @@ def prepare_data(df, prep_config):
     df = df.drop(orig_col, axis=1)
 
     threshold = y_config["Threshold"]
-    y = col.map(lambda x: 0 if pandas.isna(x) or x <= threshold else 1)
+    df["y"] = col.map(lambda x: 0 if pandas.isna(x) or x <= threshold else 1)
 
-    x_config = prep_config["X"]
-    X = prepare_x(df, x_config)
+    X = prepare_x(df)
+
+    q = prep_config["Query"]
+    X = X.query(q)
+    df = df.query(q)
+    y = df["y"]
 
     return X, y
 
