@@ -4,7 +4,7 @@ import sys
 
 from datetime import date
 import pandas
-from sklearn.dummy import DummyClassifier
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import (
     accuracy_score,
     confusion_matrix
@@ -76,7 +76,7 @@ def main():
     X_train, y_train = prepare_data(past_df, prep_config)
     X_test, y_test = prepare_data(current_df, prep_config)
 
-    model = DummyClassifier(strategy="uniform")
+    model = MultinomialNB()
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
