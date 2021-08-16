@@ -80,6 +80,10 @@ def main():
     X_train, y_train = prepare_data(past_df, prep_config)
     X_test, y_test = prepare_data(current_df, prep_config)
 
+    columns = set(X_train.columns) & set(X_test.columns)
+    X_train= X_train[columns]
+    X_test = X_test[columns]
+
     model = MultinomialNB()
     model.fit(X_train, y_train)
 
