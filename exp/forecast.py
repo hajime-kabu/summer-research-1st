@@ -28,12 +28,19 @@ def read_data(data_dir, data_config):
 
 
 def prepare_x(df, n):
-    previous_ys = [df["y"].shift(periods=i) for i in range(1, n + 1)]
-    df = pandas.DataFrame({i: previous_ys[i] for i in range(n)})
-    df["previous_y_list"] = df.values.tolist()
-    joined_ys = df["previous_y_list"].map(lambda x: ",".join([str(elm) for elm in x]))
-    
-    return pandas.get_dummies(joined_ys)
+    result = pandas.DataFrame()
+
+    for i in range(n):
+        periods = i + 1
+        shifted = df["y"].shift(periods=periods)
+        dummies = pandas.get_dummies(shifted)
+        for col in dummies:
+            if pandas.isna(col):
+                print("check")
+                continue
+            col_name = "{},{}".format(i, col)
+            result[col_name] = dummies[col]    
+    return result
 
 
 def prepare_data(df, prep_config):
