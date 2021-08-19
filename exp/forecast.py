@@ -4,16 +4,14 @@ import sys
 
 from datetime import date
 import pandas
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import (
-    accuracy_score,
-    confusion_matrix
-)
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
 
 sys.path.append("..")
 
 from lib import base_dir_path
 from lib import load_json
+from exp.model import MyModel
 
 config_path = os.path.join(base_dir_path, "exp", "config.json")
 config = load_json(config_path)
@@ -32,14 +30,7 @@ def prepare_x(df, n):
 
     for i in range(n):
         periods = i + 1
-        shifted = df["y"].shift(periods=periods)
-        dummies = pandas.get_dummies(shifted)
-        for col in dummies:
-            if pandas.isna(col):
-                print("check")
-                continue
-            col_name = "{},{}".format(i, col)
-            result[col_name] = dummies[col]    
+        result[periods] = df["y"].shift(periods=periods)
     return result
 
 
@@ -87,11 +78,7 @@ def main():
     X_train, y_train = prepare_data(past_df, prep_config)
     X_test, y_test = prepare_data(current_df, prep_config)
 
-    columns = set(X_train.columns) & set(X_test.columns)
-    X_train= X_train[columns]
-    X_test = X_test[columns]
-
-    model = MultinomialNB()
+    model = MyModel(config["Model"])
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
