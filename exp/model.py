@@ -12,6 +12,7 @@ class MyModel(object):
         self.default_params = config.get("DefaultParams", {})
         self.param_grid = config["ParamGrid"]
         self.cv = config["CV"]
+        self.scoring = config["Scoring"]
     
     def _get_dummy_x(self, X):
         result = pandas.DataFrame()
@@ -62,7 +63,7 @@ class MyModel(object):
         self.main_model = GridSearchCV(
             self.classifier(**self.default_params),
             self.param_grid,
-            scoring="recall",
+            scoring=self.scoring,
             cv=self.cv,
         )
         self.main_model.fit(data, y)
