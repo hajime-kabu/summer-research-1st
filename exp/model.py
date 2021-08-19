@@ -1,10 +1,8 @@
 import numpy
 import pandas
 from sklearn.naive_bayes import MultinomialNB
-from sklearn import svm
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import GradientBoostingClassifier
 
 
 class MyModel(object):
@@ -15,7 +13,7 @@ class MyModel(object):
         self.param_grid = config["ParamGrid"]
         self.cv = config["CV"]
     
-    def get_dummy_x(self, X):
+    def _get_dummy_x(self, X):
         result = pandas.DataFrame()
 
         for col in X:
@@ -25,8 +23,8 @@ class MyModel(object):
                 result[col_name] = dummies[dummy_label]
         return result
     
-    def transform_x(self, X):
-        dummy_x = self.get_dummy_x(X)
+    def _transform_x(self, X):
+        dummy_x = self._get_dummy_x(X)
 
         columns = dummy_x.columns
         log_prob = [
@@ -55,11 +53,11 @@ class MyModel(object):
         return pandas.DataFrame(data, index=X.index)
 
     def fit(self, X, y):
-        dummy_x = self.get_dummy_x(X)
+        dummy_x = self._get_dummy_x(X)
 
         self.nb.fit(dummy_x, y)
 
-        data = self.transform_x(X)
+        data = self._transform_x(X)
 
         self.main_model = GridSearchCV(
             self.classifier(**self.default_params),
@@ -70,5 +68,5 @@ class MyModel(object):
         self.main_model.fit(data, y)
     
     def predict(self, X):
-        data = self.transform_x(X)
+        data = self._transform_x(X)
         return self.main_model.predict(data)
