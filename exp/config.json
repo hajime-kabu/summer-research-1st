@@ -44,6 +44,7 @@
                 "solver": ["liblinear", "saga"]                
             }
         ],
-        "CV": 5
+        "CV": 5,
+        "Scoring": "recall"
     }
 }
