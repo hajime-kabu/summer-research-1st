@@ -30,21 +30,19 @@
         }
     },
     "Model": {
-        "Classifier": "LogisticRegression",
+        "Classifier": "SVC",
         "ParamGrid": [
             {
-                "C": [1, 2, 3, 4, 5],
-                "multi_class": ["ovr", "multinomial"],
-                "solver": ["lbfgs", "saga", "newton-cg"]
+                "C": [1, 10, 100, 1000],
+                "kernel": ["linear"]
             },
             {
-                "penalty": ["l1"],
-                "C": [1, 2, 3, 4, 5],
-                "multi_class": ["ovr"],
-                "solver": ["liblinear", "saga"]                
+                "C": [1, 10, 100, 1000],
+                "gamma": [0.001, 0.0001],
+                "kernel": ["rbf"]               
             }
         ],
         "CV": 5,
-        "Scoring": "recall"
+        "Scoring": "f1"
     }
 }

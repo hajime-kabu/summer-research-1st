@@ -2,6 +2,7 @@ import numpy
 import pandas
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 
 
