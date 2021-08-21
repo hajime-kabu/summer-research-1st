@@ -78,7 +78,7 @@ def main():
     X_train, y_train = prepare_data(past_df, prep_config)
     X_test, y_test = prepare_data(current_df, prep_config)
 
-    model = MyModel(config["Model"])
+    model = MyModel()
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
