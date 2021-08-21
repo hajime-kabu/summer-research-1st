@@ -45,6 +45,6 @@
             }
         ],
         "CV": 5,
-        "Scoring": "recall"
+        "Scoring": "f1"
     }
 }
