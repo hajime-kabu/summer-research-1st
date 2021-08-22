@@ -28,23 +28,5 @@
             "Query": "index.dt.month == 8 or index.dt.day >= 21",
             "N": 10
         }
-    },
-    "Model": {
-        "Classifier": "LogisticRegression",
-        "ParamGrid": [
-            {
-                "C": [1, 2, 3, 4, 5],
-                "multi_class": ["ovr", "multinomial"],
-                "solver": ["lbfgs", "saga", "newton-cg"]
-            },
-            {
-                "penalty": ["l1"],
-                "C": [1, 2, 3, 4, 5],
-                "multi_class": ["ovr"],
-                "solver": ["liblinear", "saga"]                
-            }
-        ],
-        "CV": 5,
-        "Scoring": "f1"
     }
 }
