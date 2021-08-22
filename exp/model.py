@@ -1,28 +1,14 @@
 import numpy
 import pandas
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import GridSearchCV
+from sklearn.dummy import DummyClassifier
 
 
 class MyModel(object):
     def __init__(self):
-        self.nb = MultinomialNB()
-    
-    def _get_dummy_x(self, X):
-        result = pandas.DataFrame()
-
-        for col in X:
-            dummies = pandas.get_dummies(X[col])
-            for dummy_label in dummies:
-                col_name = "{},{}".format(col, dummy_label)
-                result[col_name] = dummies[dummy_label]
-        return result
+        self.model = DummyClassifier(strategy="most_frequent")
 
     def fit(self, X, y):
-        dummy_x = self._get_dummy_x(X)
-        self.nb.fit(dummy_x, y)
+        self.model.fit(X, y)
     
     def predict(self, X):
-        dummy_x = self._get_dummy_x(X)
-        return self.nb.predict(dummy_x)
+        return self.model.predict(X)
