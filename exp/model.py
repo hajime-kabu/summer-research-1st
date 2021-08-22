@@ -1,3 +1,6 @@
+from itertools import product
+from itertools import repeat
+
 import numpy
 import pandas
 from sklearn.naive_bayes import MultinomialNB
@@ -10,13 +13,15 @@ class MyModel(object):
         self.nb = MultinomialNB()
 
     def _get_dummy_x(self, X):
-        result = pandas.DataFrame()
+        result = X.apply(lambda row: "".join([str(int(elm)) for elm in row]), axis=1)
 
-        for col in X:
-            dummies = pandas.get_dummies(X[col])
-            for dummy_label in dummies:
-                col_name = "{},{}".format(col, dummy_label)
-                result[col_name] = dummies[dummy_label]
+        result = pandas.get_dummies(result)
+        all_patterns = product("01", repeat=len(X.columns))
+        for pattern in all_patterns:
+            key = "".join(pattern)
+            if key in result:
+                continue
+            result[key] = pandas.Series(list(repeat(0, len(X))), X.index.values)
         return result
 
     def fit(self, X, y):

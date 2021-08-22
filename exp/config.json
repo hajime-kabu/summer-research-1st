@@ -26,7 +26,7 @@
             },
             "Index": "年月日",
             "Query": "index.dt.month == 8 or index.dt.day >= 21",
-            "N": 10
+            "N": 6
         }
     }
 }
